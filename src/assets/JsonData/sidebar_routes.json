@@ -1,0 +1,56 @@
+[
+  {
+    "display_name": "Dashboard",
+    "route": "/",
+    "icon": "bx bx-category-alt"
+  },
+  {
+    "display_name": "KanBan",
+    "route": "/kanban",
+    "icon": "bx bx-chart"
+  },
+  {
+    "display_name": "Gant",
+    "route": "/gant",
+    "icon": "bx bxs-chevrons-right"
+  },
+  {
+    "display_name": "Formularios",
+    "route": "#",
+    "icon": "bx bx-spreadsheet",
+    "iconOpened" :"bx bxs-chevron-down",
+    "iconClosed" :"bx bxs-chevron-up",
+    "subNav": [
+      {
+        "display_name": "Form. Proyectos",
+        "route": "/formularios/proyecto",
+        "icon": "bx bx-briefcase"
+      },
+      {
+        "display_name": "Form. Innovaciones",
+        "route": "/formularios/innovacion",
+        "icon": "bx bx-comment-add"
+      },
+      {
+        "display_name": "Form. Procesos",
+        "route": "/formularios/proceso",
+        "icon": "bx bx-stats"
+      }
+    ]
+  },
+  {
+    "display_name": "Trabajadores",
+    "route": "/trabajadores",
+    "icon": "bx bxs-user"
+  },
+  {
+    "display_name": "Proyectos",
+    "route": "/projects",
+    "icon": "bx bx-briefcase-alt-2"
+  },
+  {
+    "display_name": "Actividades",
+    "route": "/actividades",
+    "icon": "bx bx-table"
+  }
+]

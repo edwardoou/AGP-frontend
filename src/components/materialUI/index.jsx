@@ -1,0 +1,7 @@
+/* exportar todo lo que hay en el folder materialUI */
+export * from "./Date";
+export * from "./Button";
+export * from "./Select";
+export * from "./TextField";
+export * from "./SelectAreas";
+export * from "./SelectTrabajadores";

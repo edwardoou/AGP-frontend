@@ -1,0 +1,10 @@
+    {
+        "display_name": "Calendario",
+        "route": "/calendario",
+        "icon": "bx bxs-calendar"
+    },
+    {
+        "display_name": "Gant",
+        "route": "/gant",
+        "icon": "bx bxs-chevrons-right"
+    }
