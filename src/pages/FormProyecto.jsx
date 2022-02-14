@@ -8,7 +8,6 @@ import {
   TextfieldUI,
   SelectUI,
   DateUI,
-  SelectAreas,
   SelectTrabajadores,
 } from "../components/materialUI";
 //Yup-> libreria de validacion
@@ -16,12 +15,14 @@ import * as Yup from "yup";
 //Json data
 import responsabilidad from "../assets/JsonData/responsabilidad.json";
 import prioridad from "../assets/JsonData/prioridad.json";
+import areas from "../assets/JsonData/areas.json";
+import empresas from "../assets/JsonData/empresas.json";
+import sedes from "../assets/JsonData/sedes.json";
 
 //Uso withStyles en lugar de makeStyles debido a que es un compenente
 const useStyles = (theme) => ({
   formWrapper: {
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(8),
+    marginTop: theme.spacing(5)
   },
   buttonStyle: {
     marginTop: theme.spacing(2),
@@ -32,12 +33,16 @@ const useStyles = (theme) => ({
 //Formato inicial
 const INITIAL_FORM_STATE = {
   modelo: "Proyecto",
-  estado: "BackLog",
+  estado: "To Do",
   tipo: "Estandar",
   nombre: "",
   responsable_id: "",
   area_usuario: "",
   area_responsable: "",
+  empresa_usuario: "",
+  empresa_responsable: "",
+  sede_usuario: "",
+  sede_responsable: "",
   prioridad: "",
   responsabilidad: "",
   descripcion: "",
@@ -52,8 +57,12 @@ const INITIAL_FORM_STATE = {
 const FORM_VALIDATION = Yup.object().shape({
   nombre: Yup.string().required("Campo requerido"),
   responsable_id: Yup.number().required("Campo requerido"),
-  area_usuario: Yup.number().required("Campo requerido"),
-  area_responsable: Yup.number().required("Campo requerido"),
+  area_usuario: Yup.string().required("Campo requerido"),
+  area_responsable: Yup.string().required("Campo requerido"),
+  empresa_usuario: Yup.string().required("Campo requerido"),
+  empresa_responsable: Yup.string().required("Campo requerido"),
+  sede_usuario: Yup.string().required("Campo requerido"),
+  sede_responsable: Yup.string().required("Campo requerido"),
   prioridad: Yup.string().required("Campo requerido"),
   responsabilidad: Yup.string().required("Campo requerido"),
   descripcion: Yup.string().required("Campo requerido"),
@@ -70,18 +79,13 @@ const FORM_VALIDATION = Yup.object().shape({
 
 class FormProyecto extends Component {
   state = {
-    areas: [],
     trabajadores: [],
   };
   //Axios GET para los selects
   componentDidMount() {
-    //Areas
-    axios.get(process.env.REACT_APP_URL + "/areas").then((res) => {
-      //console.log(res.data);
-      this.setState({ areas: res.data });
-    });
     //Trabajadores
     axios.get(process.env.REACT_APP_URL + "/trabajadores").then((res) => {
+      //console.log(res.data);
       this.setState({ trabajadores: res.data });
     });
   }
@@ -133,20 +137,51 @@ class FormProyecto extends Component {
                           options={responsabilidad}
                         />
                       </Grid>
-                      <Grid item xs={6}>
-                        <SelectAreas
-                          name="area_usuario"
-                          label="Área Usuario"
-                          options={this.state.areas}
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <SelectAreas
+                      <Grid item xs={4}>
+                        <SelectUI
                           name="area_responsable"
                           label="Área Responsable"
-                          options={this.state.areas}
+                          options={areas}
                         />
                       </Grid>
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="empresa_responsable"
+                          label="Empresa Responsable"
+                          options={empresas}
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="sede_responsable"
+                          label="Sede Responsable"
+                          options={sedes}
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="area_usuario"
+                          label="Área del Usuario"
+                          options={areas}
+                        />
+                      </Grid>
+
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="empresa_usuario"
+                          label="Empresa del Usuario"
+                          options={empresas}
+                        />
+                      </Grid>
+
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="sede_usuario"
+                          label="Sede del Usuario"
+                          options={sedes}
+                        />
+                      </Grid>
+
                       <Grid item xs={3}>
                         <SelectUI
                           name="prioridad"

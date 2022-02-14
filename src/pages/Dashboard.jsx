@@ -166,7 +166,7 @@ const Dashboard = () => {
   useEffect(() => {
     //Consulta a la db de la data y mostrarla
     const getProjects = () => {
-      fetch("http://localhost:4000/areas")
+      fetch("http://localhost:4000/projects")
         .then((res) => res.json())
         .then((res) => setProjects(res));
     };
