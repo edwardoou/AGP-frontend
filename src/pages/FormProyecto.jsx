@@ -12,6 +12,8 @@ import {
 } from "../components/materialUI";
 //Yup-> libreria de validacion
 import * as Yup from "yup";
+//Alertas
+import swal from "sweetalert";
 //Json data
 import responsabilidad from "../assets/JsonData/responsabilidad.json";
 import prioridad from "../assets/JsonData/prioridad.json";
@@ -22,7 +24,7 @@ import sedes from "../assets/JsonData/sedes.json";
 //Uso withStyles en lugar de makeStyles debido a que es un compenente
 const useStyles = (theme) => ({
   formWrapper: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(5),
   },
   buttonStyle: {
     marginTop: theme.spacing(2),
@@ -55,7 +57,9 @@ const INITIAL_FORM_STATE = {
 
 //Validacion con Yup
 const FORM_VALIDATION = Yup.object().shape({
-  nombre: Yup.string().required("Campo requerido"),
+  nombre: Yup.string()
+    .max(100, "Superaste el numero de carácteres permitidos")
+    .required("Campo requerido"),
   responsable_id: Yup.number().required("Campo requerido"),
   area_usuario: Yup.string().required("Campo requerido"),
   area_responsable: Yup.string().required("Campo requerido"),
@@ -65,9 +69,13 @@ const FORM_VALIDATION = Yup.object().shape({
   sede_responsable: Yup.string().required("Campo requerido"),
   prioridad: Yup.string().required("Campo requerido"),
   responsabilidad: Yup.string().required("Campo requerido"),
-  descripcion: Yup.string().required("Campo requerido"),
-  //Revisar cual es el minimo de valores en la db
+  descripcion: Yup.string()
+    .max(200, "Superaste el numero de carácteres permitidos")
+    .required("Campo requerido"),
+  //en la bd esta de tipo decimal(10,2)
   costo: Yup.number()
+    .positive("Ingrese un número positivo")
+    .max(99999999.99, "Número muy elevado, max. 99999999.99")
     .typeError("Por favor digitar un número valido")
     .required("Campo requerido"),
   //Esto lo pongo string porque no se si habra para field
@@ -78,9 +86,11 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 class FormProyecto extends Component {
-  state = {
-    trabajadores: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = { trabajadores: [] };
+  }
+
   //Axios GET para los selects
   componentDidMount() {
     //Trabajadores
@@ -105,11 +115,37 @@ class FormProyecto extends Component {
                   //Esquema de validacion, propiedad de formik que lo une con yup
                   validationSchema={FORM_VALIDATION}
                   onSubmit={(values, { resetForm }) => {
-                    resetForm();
-                    //POST a la url
-                    axios
-                      .post(process.env.REACT_APP_URL + "/projects", values)
-                      .then(console.log(values));
+                    //POST a la url, uso el metodo largo por mejor orden
+                    axios({
+                      method: "post",
+                      url: process.env.REACT_APP_URL + "/projects",
+                      data: values,
+                      validateStatus: (status) => {
+                        if (status >= 200 && status < 299) {
+                          return (
+                            swal(
+                              "Listo!",
+                              "Formulario enviado con exito!",
+                              "success"
+                            ) && resetForm()
+                          );
+                        } else if (status === 500) {
+                          return swal(
+                            "Error code " + status,
+                            "Error al enviar al servidor, comprueba los campos por favor!",
+                            "error"
+                          );
+                        } else {
+                          return swal(
+                            "Error code " + status,
+                            "Abrir la consola y observar el error, en caso no hallar solucion contactar al programador",
+                            "error"
+                          );
+                        }
+                      },
+                    }).catch((error) => {
+                      console.log("Error", error.message);
+                    });
                   }}
                 >
                   <Form>
@@ -121,14 +157,17 @@ class FormProyecto extends Component {
                         <TextfieldUI
                           name="nombre"
                           label="Nombre del Proyecto"
+                          inputProps={{
+                            maxLength: 100,
+                          }}
                         />
                       </Grid>
-                      <Grid item xs={12}>
-                        <TextfieldUI
-                          name="equipo_trabajo"
-                          label="Equipo de Trabajo"
-                        />
-                      </Grid>
+                      {/* <Grid item xs={12}>
+                          <TextfieldUI
+                            name="equipo_trabajo"
+                            label="Equipo de Trabajo"
+                          />
+                        </Grid> */}
                       <Grid item xs={6}>
                         <SelectTrabajadores
                           name="responsable_id"
@@ -203,6 +242,12 @@ class FormProyecto extends Component {
                                 S/.
                               </InputAdornment>
                             ),
+                          }}
+                          inputProps={{
+                            max: 99999999.99,
+                            min: 0,
+                            step: 0.5,
+                            inputMode: "decimal",
                           }}
                           type="number"
                           name="costo"
