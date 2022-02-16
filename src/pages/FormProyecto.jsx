@@ -123,6 +123,12 @@ class FormProyecto extends Component {
                           label="Nombre del Proyecto"
                         />
                       </Grid>
+                      <Grid item xs={12}>
+                        <TextfieldUI
+                          name="equipo_trabajo"
+                          label="Equipo de Trabajo"
+                        />
+                      </Grid>
                       <Grid item xs={6}>
                         <SelectTrabajadores
                           name="responsable_id"
