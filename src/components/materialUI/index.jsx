@@ -4,3 +4,4 @@ export * from "./Button";
 export * from "./Select";
 export * from "./TextField";
 export * from "./SelectTrabajadores";
+export * from "./SelectMultiple";

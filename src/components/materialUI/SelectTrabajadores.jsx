@@ -1,11 +1,9 @@
 import React from "react";
 import { TextField, MenuItem } from "@material-ui/core";
-//UseFormikContext ->  hook personalizado de React que devolverá todo el estado de Formik y los helpers
 import { useField, useFormikContext } from "formik";
 
 const SelectTrabajadores = ({ name, options, ...otherprops }) => {
   const [field, data] = useField(name);
-  // obtiene el setFieldValue del context
   const { setFieldValue } = useFormikContext();
 
   //const que recibira un evento que es un objeto que debera ser desestructurado

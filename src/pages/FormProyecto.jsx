@@ -9,6 +9,7 @@ import {
   SelectUI,
   DateUI,
   SelectTrabajadores,
+  SelectMultipleUI,
 } from "../components/materialUI";
 //Yup-> libreria de validacion
 import * as Yup from "yup";
@@ -163,11 +164,12 @@ class FormProyecto extends Component {
                         />
                       </Grid>
                       {/* <Grid item xs={12}>
-                          <TextfieldUI
-                            name="equipo_trabajo"
-                            label="Equipo de Trabajo"
-                          />
-                        </Grid> */}
+                        <SelectMultipleUI
+                          name="equipo_trabajo"
+                          label="Equipo de Trabajo"
+                          options={this.state.trabajadores}
+                        />
+                      </Grid> */}
                       <Grid item xs={6}>
                         <SelectTrabajadores
                           name="responsable_id"
@@ -236,6 +238,7 @@ class FormProyecto extends Component {
                       </Grid>
                       <Grid item xs={3}>
                         <TextfieldUI
+                          //InputProps -> propiedades al componente <Input> directamente, que esta dentro de TextField
                           InputProps={{
                             startAdornment: (
                               <InputAdornment position="start">
@@ -243,6 +246,7 @@ class FormProyecto extends Component {
                               </InputAdornment>
                             ),
                           }}
+                          //inputProps -> atributos al elemento <input> de HTML
                           inputProps={{
                             max: 99999999.99,
                             min: 0,

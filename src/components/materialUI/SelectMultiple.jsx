@@ -1,20 +1,21 @@
 import React from "react";
-import { TextField, MenuItem } from "@material-ui/core";
-//UseFormikContext ->  hook personalizado de React que devolverá el FormikBag de Formik
+import { TextField, Chip, MenuItem } from "@mui/material";
 import { useField, useFormikContext } from "formik";
 
-const SelectUI = ({ name, options, ...otherprops }) => {
+const SelectMultipleUI = ({ name, options, ...otherprops }) => {
   const [field, data] = useField(name);
+  const [selectState, setSelectState] = React.useState([]);
   const { setFieldValue } = useFormikContext();
 
   //const que recibira un evento que es un objeto que debera ser desestructurado
   const handleChange = (evt) => {
     //obtener la opcion seleccionada (value)
     const { value } = evt.target;
+    //Permite añadir varios valores
+    setSelectState(typeof value === "string" ? value.split(",") : value);
     //setear al NAME el VALUE obtenido
     setFieldValue(name, value);
   };
-
   const configSelect = {
     ...field,
     ...otherprops,
@@ -29,20 +30,25 @@ const SelectUI = ({ name, options, ...otherprops }) => {
     configSelect.helperText = data.error;
   }
   return (
-    <TextField {...configSelect}>
-      {/* Los objetos no se pueden mapear */}
-      {/* Se obtiene los valores(options) de los objects y estos se mapean */}
-      {Object.keys(options).map((valor, index) => {
-        return (
+    <>
+      <TextField
+        {...configSelect}
+        value={selectState}
+        SelectProps={{
+          multiple: true,
+        }}
+      >
+        {/* Verificia si existe, en caso de true lo mapea */}
+        {options.map((valor) => (
           //Se ve en las opciones el VALUE, y se envia el INDEX
-          <MenuItem key={index} value={valor}>
-            {options[valor]}
+          <MenuItem key={valor.idtrabajadores} value={valor.idtrabajadores}>
+            {valor.nombre}
           </MenuItem>
-        );
-      })}
-      ;
-    </TextField>
+        ))}
+        ;
+      </TextField>
+    </>
   );
 };
 
-export { SelectUI, MenuItem };
+export { SelectMultipleUI };
