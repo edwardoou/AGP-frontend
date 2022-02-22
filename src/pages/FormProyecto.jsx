@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Container, Grid, Typography, withStyles } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Typography,
+  withStyles,
+  TextField,
+} from "@material-ui/core";
 import InputAdornment from "@mui/material/InputAdornment";
 import axios from "axios";
 import { Formik, Form } from "formik";
@@ -22,7 +28,7 @@ import areas from "../assets/JsonData/areas.json";
 import empresas from "../assets/JsonData/empresas.json";
 import sedes from "../assets/JsonData/sedes.json";
 
-//Uso withStyles en lugar de makeStyles debido a que es un compenente
+//Uso withStyles en lugar de makeStyles debido a que es un componente
 const useStyles = (theme) => ({
   formWrapper: {
     marginTop: theme.spacing(5),
@@ -49,11 +55,11 @@ const INITIAL_FORM_STATE = {
   prioridad: "",
   responsabilidad: "",
   descripcion: "",
-  costo: "",
-  archivo: "",
+  costo: 0,
   fecha_identificacion: "",
   fecha_inicio: "",
   fecha_cierre: "",
+  equipo_trabajo: "",
 };
 
 //Validacion con Yup
@@ -75,15 +81,13 @@ const FORM_VALIDATION = Yup.object().shape({
     .required("Campo requerido"),
   //en la bd esta de tipo decimal(10,2)
   costo: Yup.number()
-    .positive("Ingrese un número positivo")
     .max(99999999.99, "Número muy elevado, max. 99999999.99")
     .typeError("Por favor digitar un número valido")
     .required("Campo requerido"),
-  //Esto lo pongo string porque no se si habra para field
-  archivo: Yup.string(),
   fecha_identificacion: Yup.date().required("Fecha Requerida"),
   fecha_inicio: Yup.date().required("Fecha Requerida"),
   fecha_cierre: Yup.date().required("Fecha Requerida"),
+  equipo_trabajo: Yup.string().required("Campo requerido"),
 });
 
 class FormProyecto extends Component {
@@ -92,11 +96,20 @@ class FormProyecto extends Component {
     this.state = { trabajadores: [] };
   }
 
+  handleChange = (e) => {
+    /* console.log(e.target.files[0]); */
+    //El archivo
+    e.preventDefault();
+    this.setState({
+      archivo: e.target.files[0],
+    });
+  };
+
   //Axios GET para los selects
   componentDidMount() {
     //Trabajadores
     axios.get(process.env.REACT_APP_URL + "/trabajadores").then((res) => {
-      //console.log(res.data);
+      /* console.log(res.data); */
       this.setState({ trabajadores: res.data });
     });
   }
@@ -116,20 +129,29 @@ class FormProyecto extends Component {
                   //Esquema de validacion, propiedad de formik que lo une con yup
                   validationSchema={FORM_VALIDATION}
                   onSubmit={(values, { resetForm }) => {
+                    console.log(values);
+                    let formData = new FormData();
+                    for (let value in values) {
+                      formData.append(value, values[value]);
+                    }
+                    formData.append("archivo", this.state.archivo);
+                    for (let property of formData.entries()) {
+                      console.log(property[0], property[1]);
+                    }
                     //POST a la url, uso el metodo largo por mejor orden
                     axios({
                       method: "post",
                       url: process.env.REACT_APP_URL + "/projects",
-                      data: values,
-                      validateStatus: (status) => {
+                      data: formData,
+                      headers: new Headers({ Accept: "application/json" }),
+                      validateStatus: async (status) => {
                         if (status >= 200 && status < 299) {
-                          return (
-                            swal(
-                              "Listo!",
-                              "Formulario enviado con exito!",
-                              "success"
-                            ) && resetForm()
+                          await swal(
+                            "Listo!",
+                            "Formulario enviado con exito!",
+                            "success"
                           );
+                          return window.location.reload(false);
                         } else if (status === 500) {
                           return swal(
                             "Error code " + status,
@@ -140,13 +162,18 @@ class FormProyecto extends Component {
                           return swal(
                             "Error code " + status,
                             "Abrir la consola y observar el error, en caso no hallar solucion contactar al programador",
-                            "error"
+                            "warning"
                           );
                         }
                       },
-                    }).catch((error) => {
-                      console.log("Error", error.message);
-                    });
+                    }).then(
+                      (response) => {
+                        console.log(response);
+                      },
+                      (error) => {
+                        console.log(error);
+                      }
+                    );
                   }}
                 >
                   <Form>
@@ -163,13 +190,13 @@ class FormProyecto extends Component {
                           }}
                         />
                       </Grid>
-                      {/* <Grid item xs={12}>
+                      <Grid item xs={12}>
                         <SelectMultipleUI
                           name="equipo_trabajo"
-                          label="Equipo de Trabajo"
+                          label="Equipo de Trabajadores"
                           options={this.state.trabajadores}
                         />
-                      </Grid> */}
+                      </Grid>
                       <Grid item xs={6}>
                         <SelectTrabajadores
                           name="responsable_id"
@@ -259,7 +286,7 @@ class FormProyecto extends Component {
                         />
                       </Grid>
                       <Grid item xs={6}>
-                        <TextfieldUI
+                        <TextField
                           //No sirve para nada, solo lo agrego para que el label este estatico
                           InputProps={{
                             startAdornment: (
@@ -268,9 +295,11 @@ class FormProyecto extends Component {
                           }}
                           //------------------------------------------------------------------
                           label="Archivo (Opcional)"
-                          name="archivo"
                           type="file"
-                        />
+                          variant="outlined"
+                          fullWidth
+                          onChange={this.handleChange}
+                        ></TextField>
                       </Grid>
                       <Grid item xs={12}>
                         <TextfieldUI

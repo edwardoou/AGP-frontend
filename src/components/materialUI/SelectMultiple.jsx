@@ -13,8 +13,8 @@ const SelectMultipleUI = ({ name, options, ...otherprops }) => {
     const { value } = evt.target;
     //Permite añadir varios valores
     setSelectState(typeof value === "string" ? value.split(",") : value);
-    //setear al NAME el VALUE obtenido
-    setFieldValue(name, value);
+    //setear al NAME el VALUE obtenido, luego el .join() lo convierte en String
+    setFieldValue(name, value.join());
   };
   const configSelect = {
     ...field,
@@ -30,24 +30,20 @@ const SelectMultipleUI = ({ name, options, ...otherprops }) => {
     configSelect.helperText = data.error;
   }
   return (
-    <>
-      <TextField
-        {...configSelect}
-        value={selectState}
-        SelectProps={{
-          multiple: true,
-        }}
-      >
-        {/* Verificia si existe, en caso de true lo mapea */}
-        {options.map((valor) => (
-          //Se ve en las opciones el VALUE, y se envia el INDEX
-          <MenuItem key={valor.idtrabajadores} value={valor.idtrabajadores}>
-            {valor.nombre}
-          </MenuItem>
-        ))}
-        ;
-      </TextField>
-    </>
+    <TextField
+      {...configSelect}
+      value={selectState || ""}
+      SelectProps={{
+        multiple: true,
+      }}
+    >
+      {options.map((valor) => (
+        <MenuItem key={valor.idtrabajadores} value={valor.idtrabajadores}>
+          {valor.nombre}
+        </MenuItem>
+      ))}
+      ;
+    </TextField>
   );
 };
 
