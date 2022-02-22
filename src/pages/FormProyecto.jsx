@@ -129,15 +129,16 @@ class FormProyecto extends Component {
                   //Esquema de validacion, propiedad de formik que lo une con yup
                   validationSchema={FORM_VALIDATION}
                   onSubmit={(values, { resetForm }) => {
-                    console.log(values);
+                    /* console.log(values); */
                     let formData = new FormData();
                     for (let value in values) {
                       formData.append(value, values[value]);
                     }
                     formData.append("archivo", this.state.archivo);
-                    for (let property of formData.entries()) {
+                    /* for (let property of formData.entries()) {
                       console.log(property[0], property[1]);
-                    }
+                    } */
+
                     //POST a la url, uso el metodo largo por mejor orden
                     axios({
                       method: "post",
