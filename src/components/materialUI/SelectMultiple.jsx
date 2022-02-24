@@ -1,28 +1,24 @@
 import React from "react";
-import { TextField, Chip, MenuItem } from "@mui/material";
+import { TextField, Autocomplete } from "@mui/material";
 import { useField, useFormikContext } from "formik";
 
 const SelectMultipleUI = ({ name, options, ...otherprops }) => {
+  //field=data => name="equipo_trabajadores"
   const [field, data] = useField(name);
-  const [selectState, setSelectState] = React.useState([]);
   const { setFieldValue } = useFormikContext();
 
-  //const que recibira un evento que es un objeto que debera ser desestructurado
-  const handleChange = (evt) => {
-    //obtener la opcion seleccionada (value)
-    const { value } = evt.target;
-    //Permite añadir varios valores
-    setSelectState(typeof value === "string" ? value.split(",") : value);
-    //setear al NAME el VALUE obtenido, luego el .join() lo convierte en String
-    setFieldValue(name, value.join());
-  };
+  const handleChange = (event, valor) =>
+    //Se le da al NAME, el VALUE donde esta el ID y se vuelve un string con join()
+    setFieldValue(
+      name,
+      valor.map((elemento) => elemento.idtrabajadores).join()
+    );
+
   const configSelect = {
     ...field,
     ...otherprops,
-    select: true,
     variant: "outlined",
     fullWidth: true,
-    onChange: handleChange,
   };
 
   if (data && data.touched && data.error) {
@@ -30,20 +26,19 @@ const SelectMultipleUI = ({ name, options, ...otherprops }) => {
     configSelect.helperText = data.error;
   }
   return (
-    <TextField
-      {...configSelect}
-      value={selectState || ""}
-      SelectProps={{
-        multiple: true,
-      }}
-    >
-      {options.map((valor) => (
-        <MenuItem key={valor.idtrabajadores} value={valor.idtrabajadores}>
-          {valor.nombre}
-        </MenuItem>
-      ))}
-      ;
-    </TextField>
+    <Autocomplete
+      multiple
+      options={options}
+      getOptionLabel={(option) => option.nombre}
+      onChange={handleChange}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          {...configSelect}
+          placeholder="Agregar minimo dos miembros."
+        />
+      )}
+    />
   );
 };
 
