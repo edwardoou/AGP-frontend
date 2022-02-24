@@ -22,6 +22,11 @@
     "iconClosed" :"bx bxs-chevron-up",
     "subNav": [
       {
+        "display_name": "Form. Trabajadores",
+        "route": "/formularios/trabajador",
+        "icon": "bx bxs-user"
+      },
+      {
         "display_name": "Form. Proyectos",
         "route": "/formularios/proyecto",
         "icon": "bx bx-briefcase"

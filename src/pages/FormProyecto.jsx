@@ -308,6 +308,9 @@ class FormProyecto extends Component {
                           label="Descripción del Proyecto"
                           multiline={true}
                           rows={4}
+                          inputProps={{
+                            maxLength: 200,
+                          }}
                         />
                       </Grid>
                       <Grid item xs={12}>

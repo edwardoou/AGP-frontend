@@ -27,7 +27,7 @@ import prioridad from "../assets/JsonData/prioridad.json";
 import areas from "../assets/JsonData/areas.json";
 import empresas from "../assets/JsonData/empresas.json";
 import sedes from "../assets/JsonData/sedes.json";
-import tipo from "../assets/JsonData/tipo.json"
+import tipo from "../assets/JsonData/tipo.json";
 
 //Uso withStyles en lugar de makeStyles debido a que es un componente
 const useStyles = (theme) => ({
@@ -215,11 +215,7 @@ class FormProyecto extends Component {
                         />
                       </Grid>
                       <Grid item xs={4}>
-                        <SelectUI
-                          name="tipo"
-                          label="Tipo"
-                          options={tipo}
-                        />
+                        <SelectUI name="tipo" label="Tipo" options={tipo} />
                       </Grid>
                       <Grid item xs={4}>
                         <SelectUI
@@ -317,6 +313,9 @@ class FormProyecto extends Component {
                           label="Descripción del Proyecto"
                           multiline={true}
                           rows={4}
+                          inputProps={{
+                            maxLength: 200,
+                          }}
                         />
                       </Grid>
                       <Grid item xs={12}>

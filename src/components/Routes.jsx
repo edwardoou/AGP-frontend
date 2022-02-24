@@ -7,6 +7,7 @@ import Projects from "../pages/Projects";
 import FormProyecto from "../pages/FormProyecto";
 import FormProceso from "../pages/FormProceso";
 import FormInnovacion from "../pages/FormInnovacion";
+import FormTrabajador from "../pages/FormTrabajador";
 
 const Routes = () => {
   return (
@@ -17,6 +18,7 @@ const Routes = () => {
       <Route path="/formularios/proyecto" component={FormProyecto} />
       <Route path="/formularios/innovacion" component={FormInnovacion} />
       <Route path="/formularios/proceso" component={FormProceso} />
+      <Route path="/formularios/trabajador" component={FormTrabajador} />
     </Switch>
   );
 };
