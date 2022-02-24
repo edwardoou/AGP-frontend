@@ -42,8 +42,8 @@ const useStyles = (theme) => ({
 //Formato inicial
 const INITIAL_FORM_STATE = {
   modelo: "Proyecto",
-  estado: "To Do",
-  tipo: "Estandar",
+  estado: "To-Do",
+  tipo: "None",
   nombre: "",
   responsable_id: "",
   area_usuario: "",
