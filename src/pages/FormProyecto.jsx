@@ -109,7 +109,7 @@ class FormProyecto extends Component {
   componentDidMount() {
     //Trabajadores
     axios.get(process.env.REACT_APP_URL + "/trabajadores").then((res) => {
-      /* console.log(res.data); */
+      console.log(res.data);
       this.setState({ trabajadores: res.data });
     });
   }
@@ -295,6 +295,7 @@ class FormProyecto extends Component {
                             ),
                           }}
                           //------------------------------------------------------------------
+                          defaultValue=""
                           label="Archivo (Opcional)"
                           type="file"
                           variant="outlined"

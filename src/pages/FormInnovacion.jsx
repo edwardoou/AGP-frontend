@@ -277,6 +277,7 @@ class FormProyecto extends Component {
                             ),
                           }}
                           //------------------------------------------------------------------
+                          defaultValue=""
                           label="Archivo (Opcional)"
                           type="file"
                           variant="outlined"

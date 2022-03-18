@@ -2,42 +2,22 @@ import React, { Component } from "react";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
-import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 //Alertas
 import swal from "sweetalert";
 import { GridActionsCellItem, DataGrid } from "@mui/x-data-grid";
 
-class TableProjects extends Component {
+class TableTrabajadores extends Component {
   constructor(props) {
     super(props);
-    this.state = { projects: [] };
+    this.state = { trabajadores: [] };
   }
 
   componentDidMount() {
     //Projects
-    axios.get(process.env.REACT_APP_URL + "/projects").then((res) => {
+    axios.get(process.env.REACT_APP_URL + "/trabajadores").then((res) => {
       /* console.log(res.data); */
-      this.setState({ projects: res.data });
+      this.setState({ trabajadores: res.data });
     });
-  }
-
-  //Kanban
-  kanban(id) {
-    if (id > 0) {
-      return (window.location.href = "/gant/" + id);
-    } else {
-      swal("Error", "Hay un error con la fila", "error");
-    }
-  }
-
-  //Descarga
-  descargar(id) {
-    if (id > 0) {
-      swal("Error", "No hay un archivo que descargar!", "warning");
-    } else {
-      swal("Error", "No hay un archivo que descargar!", "warning");
-    }
   }
 
   //Editar
@@ -53,6 +33,10 @@ class TableProjects extends Component {
     }
   }
 
+  /* 
+  TODO: DELETE accion
+  no se si implementar el casade al eliminar el trabajador, todavia estoy en duda, no se si dar la posibilidad de eliminar al trabajador o negar esa funcion
+  */
   //DELETE
   eliminar(id) {
     swal({
@@ -64,13 +48,13 @@ class TableProjects extends Component {
     }).then((value) => {
       if (value) {
         axios
-          .delete(process.env.REACT_APP_URL + "/projects/" + id)
+          .delete(process.env.REACT_APP_URL + "/trabajadores/" + id)
           .then((res) => {
-            var temp = this.state.projects.filter(
-              (project) => project.idprojects !== id
+            var temp = this.state.trabajadores.filter(
+              (trabajador) => trabajador.idprojects !== id
             );
             this.setState({
-              projects: temp,
+              trabajadores: temp,
             });
             swal("Se elimino la fila exitosamente!", {
               icon: "success",
@@ -88,66 +72,49 @@ class TableProjects extends Component {
         <h2 className="page-header">Tabla General</h2>
         <div className="card" style={{ height: 762, width: "100%" }}>
           <DataGrid
-            getRowId={(row) => row.idprojects}
-            rows={this.state.projects}
+            getRowId={(row) => row.idtrabajadores}
+            rows={this.state.trabajadores}
             columns={[
               {
-                field: "modelo",
-                headerName: "MODELO",
+                field: "nombre",
+                headerName: "NOMBRE",
+                width: 180,
+              },
+              { field: "telefono", headerName: "TELEFONO", width: 120 },
+              { field: "direccion", headerName: "DIRECCION", width: 150 },
+              { field: "observacion", headerName: "OBSERVACION  ", width: 200 },
+              {
+                field: "sexo",
+                headerName: "SEXO",
                 width: 100,
               },
-              { field: "estado", headerName: "ESTADO", width: 130 },
-              { field: "tipo", headerName: "TIPO", width: 100 },
-              { field: "nombre", headerName: "NOMBRE", width: 200 },
               {
-                field: "trabajador_nombre",
-                headerName: "RESPONSABLE",
+                field: "categoria",
+                headerName: "CATEGORIA",
+                width: 100,
+              },
+              {
+                field: "sede",
+                headerName: "SEDE",
+                width: 80,
+              },
+              {
+                field: "area",
+                headerName: "AREA",
+                width: 150,
+              },
+              { field: "puesto", headerName: "PUESTO", width: 130 },
+              {
+                field: "empresa",
+                headerName: "EMPRESA",
                 width: 150,
               },
               {
-                field: "areas",
-                headerName: "AREA (USUARIA - RESPONSABLE)",
-                width: 300,
-                valueGetter(params) {
-                  return `${params.row.area_usuario || "No hay"}\n - ${
-                    params.row.area_responsable || "No hay"
-                  }`;
-                },
-              },
-              {
-                field: "empresa_usuario",
-                headerName: "EMPRESA USUARIO",
-                width: 150,
-              },
-              {
-                field: "empresa_responsable",
-                headerName: "EMPRESA USUARIO",
-                width: 150,
-              },
-              { field: "sede_usuario", headerName: "SEDE USUARIO", width: 130 },
-              {
-                field: "sede_responsable",
-                headerName: "SEDE RESPONSABLE",
-                width: 150,
-              },
-              { field: "prioridad", headerName: "PRIORIDAD", width: 100 },
-              {
-                field: "responsabilidad",
-                headerName: "RESPONSABILIDAD",
-                width: 150,
-              },
-              {
-                field: "costo",
-                headerName: "COSTO",
-                type: "number",
-                width: 70,
-              },
-              {
-                field: "fecha_identificacion",
-                headerName: "FECHA IDENTIF.",
+                field: "fecha_nacimiento",
+                headerName: "FECHA NACIMI.",
                 width: 130,
                 valueGetter(params) {
-                  var date = new Date(params.row.fecha_identificacion);
+                  var date = new Date(params.row.fecha_nacimiento);
                   return (
                     date.getDate() +
                     "/" +
@@ -158,11 +125,11 @@ class TableProjects extends Component {
                 },
               },
               {
-                field: "fecha_inicio",
-                headerName: "FECHA INICIO",
+                field: "fecha_ingreso",
+                headerName: "FECHA INGRESO",
                 width: 130,
                 valueGetter(params) {
-                  var date = new Date(params.row.fecha_inicio);
+                  var date = new Date(params.row.fecha_ingreso);
                   return (
                     date.getDate() +
                     "/" +
@@ -173,12 +140,12 @@ class TableProjects extends Component {
                 },
               },
               {
-                field: "fecha_cierre",
-                headerName: "FECHA CIERRE",
+                field: "fecha_cese",
+                headerName: "FECHA CESE",
                 width: 130,
                 type: "date",
                 valueGetter(params) {
-                  var date = new Date(params.row.fecha_cierre);
+                  var date = new Date(params.row.fecha_cese);
                   return (
                     date.getDate() +
                     "/" +
@@ -194,16 +161,6 @@ class TableProjects extends Component {
                 type: "actions",
                 width: 150,
                 getActions: (params) => [
-                  <GridActionsCellItem
-                    icon={<DownloadForOfflineIcon />}
-                    label="Descargar"
-                    onClick={() => this.descargar(params.row.idprojects)}
-                  />,
-                  <GridActionsCellItem
-                    icon={<ViewKanbanIcon />}
-                    label="KanBan"
-                    onClick={() => this.kanban(params.row.idprojects)}
-                  />,
                   <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Editar"
@@ -228,4 +185,4 @@ class TableProjects extends Component {
   }
 }
 
-export default TableProjects;
+export default TableTrabajadores;

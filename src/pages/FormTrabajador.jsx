@@ -221,6 +221,7 @@ class FormProyecto extends Component {
                             ),
                           }}
                           //------------------------------------------------------------------
+                          defaultValue=""
                           label="Foto (Opcional)"
                           type="file"
                           variant="outlined"

@@ -1,32 +1,34 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
 const itemsFromBackend = [
-  { id: uuid(), content: "First task" },
+  { id: "12", content: "First task" },
   { id: uuid(), content: "Second task" },
   { id: uuid(), content: "Third task" },
   { id: uuid(), content: "Fourth task" },
-  { id: uuid(), content: "Fifth task" }
+  { id: uuid(), content: "Fifth task" },
 ];
 
 const columnsFromBackend = {
-  [uuid()]: {
-    name: "Requested",
-    items: itemsFromBackend
+  1: {
+    name: "To-Do",
+    items: itemsFromBackend,
   },
-  [uuid()]: {
-    name: "To do",
-    items: []
+  2: {
+    name: "En Diseño",
+    items: [],
   },
-  [uuid()]: {
-    name: "In Progress",
-    items: []
+  3: {
+    name: "En Ejecucion",
+    items: [],
   },
-  [uuid()]: {
-    name: "Done",
-    items: []
-  }
+  4: {
+    name: "Ejecutado",
+    items: [],
+  },
 };
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -45,12 +47,12 @@ const onDragEnd = (result, columns, setColumns) => {
       ...columns,
       [source.droppableId]: {
         ...sourceColumn,
-        items: sourceItems
+        items: sourceItems,
       },
       [destination.droppableId]: {
         ...destColumn,
-        items: destItems
-      }
+        items: destItems,
+      },
     });
   } else {
     const column = columns[source.droppableId];
@@ -61,18 +63,40 @@ const onDragEnd = (result, columns, setColumns) => {
       ...columns,
       [source.droppableId]: {
         ...column,
-        items: copiedItems
-      }
+        items: copiedItems,
+      },
     });
   }
 };
 
-function App() {
+const App = () => {
   const [columns, setColumns] = useState(columnsFromBackend);
+  const [dataProject, setDataProject] = React.useState();
+  let url = process.env.REACT_APP_URL;
+  let { idproject } = useParams();
+
+  React.useEffect(() => {
+    axios.get(url + "/projects/" + idproject).then((res) => {
+      console.log(res.data);
+      setDataProject(res.data);
+    });
+  }, []);
+
+  function createPost() {
+    axios
+      .post(url, {
+        title: "Hello World!",
+        body: "This is a new post.",
+      })
+      .then((response) => {
+        setDataProject(response.data);
+      });
+  }
+
   return (
     <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
       <DragDropContext
-        onDragEnd={result => onDragEnd(result, columns, setColumns)}
+        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
@@ -80,7 +104,7 @@ function App() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center"
+                alignItems: "center",
               }}
               key={columnId}
             >
@@ -98,7 +122,7 @@ function App() {
                             : "lightgrey",
                           padding: 4,
                           width: 250,
-                          minHeight: 500
+                          minHeight: 500,
                         }}
                       >
                         {column.items.map((item, index) => {
@@ -123,7 +147,7 @@ function App() {
                                         ? "#263B4A"
                                         : "#456C86",
                                       color: "white",
-                                      ...provided.draggableProps.style
+                                      ...provided.draggableProps.style,
                                     }}
                                   >
                                     {item.content}
@@ -145,6 +169,6 @@ function App() {
       </DragDropContext>
     </div>
   );
-}
+};
 
 export default App;
