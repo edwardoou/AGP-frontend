@@ -5,16 +5,6 @@
     "icon": "bx bx-category-alt"
   },
   {
-    "display_name": "KanBan",
-    "route": "/kanban",
-    "icon": "bx bx-chart"
-  },
-  {
-    "display_name": "Gant",
-    "route": "/gant",
-    "icon": "bx bxs-chevrons-right"
-  },
-  {
     "display_name": "Formularios",
     "route": "#",
     "icon": "bx bx-spreadsheet",
@@ -52,10 +42,5 @@
     "display_name": "Proyectos",
     "route": "/projects",
     "icon": "bx bx-briefcase-alt-2"
-  },
-  {
-    "display_name": "Actividades",
-    "route": "/actividades",
-    "icon": "bx bx-table"
   }
 ]

@@ -1,22 +1,22 @@
 [
     {
-        "icon": "bx bx-shopping-bag",
-        "count": "1,995",
-        "title": "Total sales"
+        "icon": "bx bx-network-chart",
+        "count": "23",
+        "title": "Innovaciones"
     },
     {
-        "icon": "bx bx-cart",
-        "count": "2,001",
-        "title": "Daily visits"
+        "icon": "bx bx-bar-chart-square",
+        "count": "13",
+        "title": "Procesos"
     },
     {
-        "icon": "bx bx-dollar-circle",
-        "count": "$2,632",
-        "title": "Total income"
+        "icon": "bx bx-briefcase",
+        "count": "15",
+        "title": "Proyectos"
     },
     {
-        "icon": "bx bx-receipt",
-        "count": "1,711",
-        "title": "Total orders"
+        "icon": "bx bx-happy-beaming",
+        "count": "24",
+        "title": "Trabajadores"
     }
 ]

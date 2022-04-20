@@ -81,14 +81,14 @@ class TableProjects extends Component {
       }
     });
   }
-  
+
   render() {
     return (
       <>
         <h2 className="page-header">Tabla General</h2>
         <div className="card" style={{ height: 762, width: "100%" }}>
           <DataGrid
-            getRowId={(row) => row.idprojects}
+            getRowId={(row) => row.id}
             rows={this.state.projects}
             columns={[
               {
@@ -100,9 +100,12 @@ class TableProjects extends Component {
               { field: "tipo", headerName: "TIPO", width: 100 },
               { field: "nombre", headerName: "NOMBRE", width: 200 },
               {
-                field: "trabajador_nombre",
+                field: "responsable",
                 headerName: "RESPONSABLE",
                 width: 150,
+                valueGetter(params) {
+                  return `${params.row.responsable.nombre}`;
+                },
               },
               {
                 field: "areas",

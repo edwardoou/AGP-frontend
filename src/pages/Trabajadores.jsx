@@ -65,20 +65,35 @@ class TableTrabajadores extends Component {
       }
     });
   }
-  
+
   render() {
     return (
       <>
         <h2 className="page-header">Tabla General</h2>
         <div className="card" style={{ height: 762, width: "100%" }}>
           <DataGrid
-            getRowId={(row) => row.idtrabajadores}
+            getRowId={(row) => row.id}
             rows={this.state.trabajadores}
             columns={[
               {
                 field: "nombre",
                 headerName: "NOMBRE",
                 width: 180,
+              },
+              {
+                field: "foto",
+                headerName: "FOTO",
+                width: 80,
+                renderCell: (params) => (
+                  <img
+                    src={params.value}
+                    display="flex"
+                    height="50"
+                    width="50"
+                    aspectRatio="1"
+                    alt={params.value}
+                  />
+                ), // renderCell will render the component
               },
               { field: "telefono", headerName: "TELEFONO", width: 120 },
               { field: "direccion", headerName: "DIRECCION", width: 150 },

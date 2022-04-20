@@ -11,11 +11,11 @@ import Badge from "../components/badge/badge";
 const chartOptions = {
   series: [
     {
-      name: "Test 1",
+      name: "Proyectos",
       data: [40, 70, 20, 90, 36, 80, 30, 91, 60],
     },
     {
-      name: "Test 2",
+      name: "Procesos",
       data: [40, 30, 70, 80, 40, 16, 40, 20, 51, 10],
     },
   ],
@@ -83,18 +83,6 @@ class Dashboard extends Component {
                 type="line"
                 height="100%"
               />
-            </div>
-          </div>
-          <div className="col-7">
-            <div className="card">
-              {/* Segunda tabla*/}
-              <div className="card__header">
-                <h3>Tabla de Actividades</h3>
-              </div>
-              <div className="card__body"></div>
-              <div className="card__footer">
-                <Link to="/actividades">Ver todo</Link>
-              </div>
             </div>
           </div>
         </div>

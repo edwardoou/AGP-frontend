@@ -30,7 +30,7 @@ const SelectTrabajadores = ({ name, options, ...otherprops }) => {
   return (
     <TextField {...configSelect}>
       {options.map((elemento) => (
-        <MenuItem key={elemento.idtrabajadores} value={elemento.idtrabajadores}>
+        <MenuItem key={elemento.id} value={elemento.id}>
           {elemento.nombre}
         </MenuItem>
       ))}

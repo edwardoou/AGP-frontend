@@ -11,7 +11,7 @@ const SelectMultipleUI = ({ name, options, ...otherprops }) => {
     //Se le da al NAME, el VALUE donde esta el ID y se vuelve un string con join()
     setFieldValue(
       name,
-      valor.map((elemento) => elemento.idtrabajadores).join()
+      valor.map((elemento) => elemento.id).join()
     );
 
   const configSelect = {
