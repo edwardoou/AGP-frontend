@@ -3,16 +3,13 @@ import { TextField, Autocomplete } from "@mui/material";
 import { useField, useFormikContext } from "formik";
 
 const SelectMultipleUI = ({ name, options, ...otherprops }) => {
-  //field=data => name="equipo_trabajadores"
   const [field, data] = useField(name);
   const { setFieldValue } = useFormikContext();
 
-  const handleChange = (event, valor) =>
+  const handleChange = (evt, valor) => {
     //Se le da al NAME, el VALUE donde esta el ID y se vuelve un string con join()
-    setFieldValue(
-      name,
-      valor.map((elemento) => elemento.id).join()
-    );
+    setFieldValue(name, valor.map((elemento) => elemento.id).join());
+  };
 
   const configSelect = {
     ...field,
@@ -35,7 +32,7 @@ const SelectMultipleUI = ({ name, options, ...otherprops }) => {
         <TextField
           {...params}
           {...configSelect}
-          placeholder="Agregar minimo dos miembros."
+          //placeholder="Agregar minimo dos miembros."
         />
       )}
     />
