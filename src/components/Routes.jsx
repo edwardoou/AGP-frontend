@@ -1,15 +1,22 @@
 import React from "react";
 import { Route, Switch } from "react-router";
 
-//Paginas
 import Dashboard from "../pages/Dashboard";
-import Projects from "../pages/Projects";
-import Trabajadores from "../pages/Trabajadores"
-import FormProyecto from "../pages/FormProyecto";
-import FormProceso from "../pages/FormProceso";
-import FormInnovacion from "../pages/FormInnovacion";
-import FormTrabajador from "../pages/FormTrabajador";
-import EditProyecto from "../pages/EditProyecto";
+
+//*Projects
+import Projects from "../pages/projects/Projects";
+//Proyecto
+import FormProyecto from "../pages/projects/proyecto/FormProyecto";
+import EditProyecto from "../pages/projects/proyecto/EditProyecto";
+//Proceso
+import FormProceso from "../pages/projects/proceso/FormProceso";
+//Innovacion
+import FormInnovacion from "../pages/projects/innovacion/FormInnovacion";
+
+//*Trabajador
+import Trabajadores from "../pages/trabajadores/Trabajadores";
+import FormTrabajador from "../pages/trabajadores/FormTrabajador";
+
 import KanbanGeneral from "../pages/KanBan";
 import Test from "../pages/KanBanTest";
 

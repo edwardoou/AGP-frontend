@@ -16,17 +16,17 @@ import {
   DateUI,
   SelectTrabajadores,
   SelectMultipleUI,
-} from "../components/materialUI";
+} from "../../../components/materialUI";
 //Yup-> libreria de validacion
 import * as Yup from "yup";
 //Alertas
 import swal from "sweetalert";
 //Json data
-import responsabilidad from "../assets/JsonData/responsabilidad.json";
-import prioridad from "../assets/JsonData/prioridad.json";
-import areas from "../assets/JsonData/areas.json";
-import empresas from "../assets/JsonData/empresas.json";
-import sedes from "../assets/JsonData/sedes.json";
+import responsabilidad from "../../../assets/JsonData/responsabilidad.json";
+import prioridad from "../../../assets/JsonData/prioridad.json";
+import areas from "../../../assets/JsonData/areas.json";
+import empresas from "../../../assets/JsonData/empresas.json";
+import sedes from "../../../assets/JsonData/sedes.json";
 
 //Uso withStyles en lugar de makeStyles debido a que es un componente
 const useStyles = (theme) => ({

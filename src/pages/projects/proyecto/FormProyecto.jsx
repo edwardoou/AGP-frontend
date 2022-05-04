@@ -14,17 +14,19 @@ import {
   TextfieldUI,
   SelectUI,
   DateUI,
-} from "../components/materialUI";
+  SelectTrabajadores,
+  SelectMultipleUI,
+} from "../../../components/materialUI";
 //Yup-> libreria de validacion
 import * as Yup from "yup";
 //Alertas
 import swal from "sweetalert";
 //Json data
-import sexos from "../assets/JsonData/sexo.json";
-import categorias from "../assets/JsonData/categoria.json";
-import areas from "../assets/JsonData/areas.json";
-import empresas from "../assets/JsonData/empresas.json";
-import sedes from "../assets/JsonData/sedes.json";
+import responsabilidad from "../../../assets/JsonData/responsabilidad.json";
+import prioridad from "../../../assets/JsonData/prioridad.json";
+import areas from "../../../assets/JsonData/areas.json";
+import empresas from "../../../assets/JsonData/empresas.json";
+import sedes from "../../../assets/JsonData/sedes.json";
 
 //Uso withStyles en lugar de makeStyles debido a que es un componente
 const useStyles = (theme) => ({
@@ -39,19 +41,25 @@ const useStyles = (theme) => ({
 
 //Formato inicial
 const INITIAL_FORM_STATE = {
+  modelo: "Proyecto",
+  estado: "To-Do",
+  tipo: "None",
   nombre: "",
-  telefono: "",
-  direccion: "",
-  observacion: "",
-  sexo: "",
-  empresa: "",
-  categoria: "",
-  sede: "",
-  area: "",
-  puesto: "",
-  fecha_nacimiento: "",
-  fecha_ingreso: "",
-  fecha_cese: "",
+  responsable_id: "",
+  area_usuario: "",
+  area_responsable: "",
+  empresa_usuario: "",
+  empresa_responsable: "",
+  sede_usuario: "",
+  sede_responsable: "",
+  prioridad: "",
+  responsabilidad: "",
+  descripcion: "",
+  costo: 0,
+  fecha_identificacion: "",
+  fecha_inicio: "",
+  fecha_cierre: "",
+  equipo_trabajadores: "",
 };
 
 //Validacion con Yup
@@ -59,35 +67,59 @@ const FORM_VALIDATION = Yup.object().shape({
   nombre: Yup.string()
     .max(100, "Superaste el numero de carácteres permitidos")
     .required("Campo requerido"),
-  telefono: Yup.string().required("Campo requerido"),
-  direccion: Yup.string().required("Campo requerido"),
-  sexo: Yup.string().required("Campo requerido"),
-  empresa: Yup.string().required("Campo requerido"),
-  categoria: Yup.string().required("Campo requerido"),
-  sede: Yup.string().required("Campo requerido"),
-  area: Yup.string().required("Campo requerido"),
-  puesto: Yup.string().required("Campo requerido"),
-  fecha_nacimiento: Yup.date().required("Fecha Requerida"),
-  fecha_ingreso: Yup.date().required("Fecha Requerida"),
+  responsable_id: Yup.number().required("Campo requerido"),
+  area_usuario: Yup.string().required("Campo requerido"),
+  area_responsable: Yup.string().required("Campo requerido"),
+  empresa_usuario: Yup.string().required("Campo requerido"),
+  empresa_responsable: Yup.string().required("Campo requerido"),
+  sede_usuario: Yup.string().required("Campo requerido"),
+  sede_responsable: Yup.string().required("Campo requerido"),
+  prioridad: Yup.string().required("Campo requerido"),
+  responsabilidad: Yup.string().required("Campo requerido"),
+  descripcion: Yup.string()
+    .max(200, "Superaste el numero de carácteres permitidos")
+    .required("Campo requerido"),
+  //en la bd esta de tipo decimal(10,2)
+  costo: Yup.number()
+    .max(99999999.99, "Número muy elevado, max. 99999999.99")
+    .typeError("Por favor digitar un número valido")
+    .required("Campo requerido"),
+  fecha_identificacion: Yup.date().required("Fecha Requerida"),
+  fecha_inicio: Yup.date().required("Fecha Requerida"),
+  fecha_cierre: Yup.date().required("Fecha Requerida"),
+  equipo_trabajadores: Yup.string().required("Campo requerido"),
 });
 
 class FormProyecto extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { trabajadores: [] };
+  }
+
   handleChange = (e) => {
     /* console.log(e.target.files[0]); */
     //El archivo
     e.preventDefault();
     this.setState({
-      foto: e.target.files[0],
+      archivo: e.target.files[0],
     });
   };
 
+  //Axios GET para los selects
+  componentDidMount() {
+    //Trabajadores
+    axios.get(process.env.REACT_APP_URL + "/trabajadores").then((res) => {
+      console.log(res.data);
+      this.setState({ trabajadores: res.data });
+    });
+  }
   render() {
     const { classes } = this.props;
     return (
       <div className="card">
         <Grid container>
           <Grid item xs={12}>
-            <h2>Formulario de Trabajadores</h2>
+            <h2>Formulario de Proyectos</h2>
           </Grid>
           <Grid item xs={12}>
             <Container maxWidth="md">
@@ -102,7 +134,7 @@ class FormProyecto extends Component {
                     for (let value in values) {
                       formData.append(value, values[value]);
                     }
-                    formData.append("foto", this.state.foto);
+                    formData.append("archivo", this.state.archivo);
                     /* for (let property of formData.entries()) {
                       console.log(property[0], property[1]);
                     } */
@@ -110,7 +142,7 @@ class FormProyecto extends Component {
                     //POST a la url, uso el metodo largo por mejor orden
                     axios({
                       method: "post",
-                      url: process.env.REACT_APP_URL + "/trabajadores",
+                      url: process.env.REACT_APP_URL + "/projects",
                       data: formData,
                       headers: new Headers({ Accept: "application/json" }),
                       validateStatus: async (status) => {
@@ -148,69 +180,111 @@ class FormProyecto extends Component {
                   <Form>
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
-                        <Typography variant="h6">Datos Personales</Typography>
+                        <Typography variant="h6">Datos del Proyecto</Typography>
                       </Grid>
                       <Grid item xs={12}>
                         <TextfieldUI
                           name="nombre"
-                          label="Nombre del Trabajador"
+                          label="Nombre del Proyecto"
                           inputProps={{
                             maxLength: 100,
                           }}
                         />
-                      </Grid>
-                      <Grid item xs={8}>
-                        <TextfieldUI
-                          name="direccion"
-                          label="Direccion"
-                          inputProps={{
-                            maxLength: 100,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={2}>
-                        <TextfieldUI
-                          name="telefono"
-                          label="Telefono"
-                          inputProps={{
-                            maxLength: 15,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={2}>
-                        <SelectUI name="sexo" label="Sexo" options={sexos} />
                       </Grid>
                       <Grid item xs={12}>
-                        <Typography variant="h6">Datos Laborales</Typography>
+                        <SelectMultipleUI
+                          name="equipo_trabajadores"
+                          label="Equipo de Trabajadores"
+                          options={this.state.trabajadores}
+                        />
                       </Grid>
-                      <Grid item xs={2}>
+                      <Grid item xs={6}>
+                        <SelectTrabajadores
+                          name="responsable_id"
+                          label="Responsable"
+                          options={this.state.trabajadores}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
                         <SelectUI
-                          name="empresa"
-                          label="Empresa"
+                          name="responsabilidad"
+                          label="Responsabilidad"
+                          options={responsabilidad}
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="area_responsable"
+                          label="Área Responsable"
+                          options={areas}
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="empresa_responsable"
+                          label="Empresa Responsable"
                           options={empresas}
                         />
                       </Grid>
-                      <Grid item xs={2}>
-                        <SelectUI name="sede" label="Sede" options={sedes} />
-                      </Grid>
-                      <Grid item xs={2}>
+                      <Grid item xs={4}>
                         <SelectUI
-                          name="categoria"
-                          label="Categoria"
-                          options={categorias}
+                          name="sede_responsable"
+                          label="Sede Responsable"
+                          options={sedes}
                         />
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="area_usuario"
+                          label="Área del Usuario"
+                          options={areas}
+                        />
+                      </Grid>
+
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="empresa_usuario"
+                          label="Empresa del Usuario"
+                          options={empresas}
+                        />
+                      </Grid>
+
+                      <Grid item xs={4}>
+                        <SelectUI
+                          name="sede_usuario"
+                          label="Sede del Usuario"
+                          options={sedes}
+                        />
+                      </Grid>
+
+                      <Grid item xs={3}>
+                        <SelectUI
+                          name="prioridad"
+                          label="Prioridad"
+                          options={prioridad}
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
                         <TextfieldUI
-                          name="puesto"
-                          label="Puesto"
-                          inputProps={{
-                            maxLength: 100,
+                          //InputProps -> propiedades al componente <Input> directamente, que esta dentro de TextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                S/.
+                              </InputAdornment>
+                            ),
                           }}
+                          //inputProps -> atributos al elemento <input> de HTML
+                          inputProps={{
+                            max: 99999999.99,
+                            min: 0,
+                            step: 0.5,
+                            inputMode: "decimal",
+                          }}
+                          type="number"
+                          name="costo"
+                          label="Costo"
                         />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <SelectUI name="area" label="Area" options={areas} />
                       </Grid>
                       <Grid item xs={6}>
                         <TextField
@@ -222,7 +296,7 @@ class FormProyecto extends Component {
                           }}
                           //------------------------------------------------------------------
                           defaultValue=""
-                          label="Foto (Opcional)"
+                          label="Archivo (Opcional)"
                           type="file"
                           variant="outlined"
                           fullWidth
@@ -231,8 +305,8 @@ class FormProyecto extends Component {
                       </Grid>
                       <Grid item xs={12}>
                         <TextfieldUI
-                          name="observacion"
-                          label="Observaciones(Opcional)"
+                          name="descripcion"
+                          label="Descripción del Proyecto"
                           multiline={true}
                           rows={4}
                           inputProps={{
@@ -245,18 +319,15 @@ class FormProyecto extends Component {
                       </Grid>
                       <Grid item xs={4}>
                         <DateUI
-                          name="fecha_nacimiento"
-                          label="Fecha de Nacimiento"
+                          name="fecha_identificacion"
+                          label="Fecha de Identificación"
                         />
                       </Grid>
                       <Grid item xs={4}>
-                        <DateUI name="fecha_ingreso" label="Fecha de Ingreso" />
+                        <DateUI name="fecha_inicio" label="Fecha de Inicio" />
                       </Grid>
                       <Grid item xs={4}>
-                        <DateUI
-                          name="fecha_cese"
-                          label="Fecha de Cese(Opcional)"
-                        />
+                        <DateUI name="fecha_cierre" label="Fecha de Cierre" />
                       </Grid>
                       <Grid
                         container
