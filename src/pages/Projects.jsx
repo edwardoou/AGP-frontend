@@ -17,8 +17,7 @@ class TableProjects extends Component {
   componentDidMount() {
     //Projects
     axios.get(process.env.REACT_APP_URL + "/projects").then((res) => {
-      /* console.log(res.data); */
-      this.setState({ projects: res.data });
+      this.setState({ projects: res.data.data });
     });
   }
 
@@ -67,7 +66,7 @@ class TableProjects extends Component {
           .delete(process.env.REACT_APP_URL + "/projects/" + id)
           .then((res) => {
             var temp = this.state.projects.filter(
-              (project) => project.idprojects !== id
+              (project) => project.id !== id
             );
             this.setState({
               projects: temp,
@@ -150,14 +149,7 @@ class TableProjects extends Component {
                 headerName: "FECHA IDENTIF.",
                 width: 130,
                 valueGetter(params) {
-                  var date = new Date(params.row.fecha_identificacion);
-                  return (
-                    date.getDate() +
-                    "/" +
-                    (date.getMonth() + 1) +
-                    "/" +
-                    date.getFullYear()
-                  );
+                  return params.row.fecha_identificacion.split("T")[0];
                 },
               },
               {
@@ -165,14 +157,7 @@ class TableProjects extends Component {
                 headerName: "FECHA INICIO",
                 width: 130,
                 valueGetter(params) {
-                  var date = new Date(params.row.fecha_inicio);
-                  return (
-                    date.getDate() +
-                    "/" +
-                    (date.getMonth() + 1) +
-                    "/" +
-                    date.getFullYear()
-                  );
+                  return params.row.fecha_inicio.split("T")[0];
                 },
               },
               {
@@ -181,14 +166,7 @@ class TableProjects extends Component {
                 width: 130,
                 type: "date",
                 valueGetter(params) {
-                  var date = new Date(params.row.fecha_cierre);
-                  return (
-                    date.getDate() +
-                    "/" +
-                    (date.getMonth() + 1) +
-                    "/" +
-                    date.getFullYear()
-                  );
+                  return params.row.fecha_cierre.split("T")[0];
                 },
               },
               {
@@ -200,24 +178,24 @@ class TableProjects extends Component {
                   <GridActionsCellItem
                     icon={<DownloadForOfflineIcon />}
                     label="Descargar"
-                    onClick={() => this.descargar(params.row.idprojects)}
+                    onClick={() => this.descargar(params.row.id)}
                   />,
                   <GridActionsCellItem
                     icon={<ViewKanbanIcon />}
                     label="KanBan"
-                    onClick={() => this.kanban(params.row.idprojects)}
+                    onClick={() => this.kanban(params.row.id)}
                   />,
                   <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Editar"
                     onClick={() =>
-                      this.editlink(params.row.idprojects, params.row.modelo)
+                      this.editlink(params.row.id, params.row.modelo)
                     }
                   />,
                   <GridActionsCellItem
                     icon={<DeleteIcon />}
                     label="Eliminar"
-                    onClick={() => this.eliminar(params.row.idprojects)}
+                    onClick={() => this.eliminar(params.row.id)}
                   />,
                 ],
               },

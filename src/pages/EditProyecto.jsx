@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Container,
@@ -65,27 +65,38 @@ const FORM_VALIDATION = Yup.object().shape({
   fecha_identificacion: Yup.date().required("Fecha Requerida"),
   fecha_inicio: Yup.date().required("Fecha Requerida"),
   fecha_cierre: Yup.date().required("Fecha Requerida"),
-  equipo_trabajo: Yup.string().required("Campo requerido"),
+  equipo_trabajadores: Yup.string().required("Campo requerido"),
 });
 
 const EditProyecto = () => {
-  const [dataProject, setDataProject] = React.useState([]);
-  const [dataTrabajadores, setDataTrabajadores] = React.useState([]);
+  const [dataProject, setDataProject] = useState([]);
+  const [dataTrabajadores, setDataTrabajadores] = useState([]);
   let { id } = useParams();
   const classes = useStyles();
   let formData = new FormData();
   const url = process.env.REACT_APP_URL;
 
-  React.useEffect(() => {
+  useEffect(() => {
+    /* const APIProject = async () => {
+      let result = await axios.get(url + "/projects/" + id);
+      setDataProject(result.data.data);
+    };
+    const APIWorker = async () => {
+      let result = await axios.get(url + "/trabajadores");
+      setDataTrabajadores(result.data);
+    };
+    APIProject();
+    APIWorker(); */
     //Id del project
     axios.get(url + "/projects/" + id).then((res) => {
-      setDataProject(res.data);
+      setDataProject(res.data.data);
+      console.log(res.data.data);
     });
     //Trabajadores
     axios.get(url + "/trabajadores").then((res) => {
       setDataTrabajadores(res.data);
     });
-  }, [id, url]);
+  }, [url, id, setDataProject, setDataTrabajadores]); //se vuelve a ejecutar si alguno de estos valores cambia
 
   const handleChange = (e) => {
     //El archivo
@@ -93,11 +104,30 @@ const EditProyecto = () => {
     formData.append("archivo", e.target.files[0]);
   };
 
+  function dateFormat(date) {
+    return date.split("T")[0];
+  }
+
+  function team(equipo) {
+    if (!equipo) {
+      return "";
+    } else {
+      return equipo.map((id) => id["trabajadores"]["id"]).join();
+    }
+  }
+
+  function teamName(equipo) {
+    if (!equipo) {
+      return "";
+    } else {
+      return equipo.map((id) => id["trabajadores"]["nombre"]).join();
+    }
+  }
   return (
     <div className="card">
       <Grid container>
         <Grid item xs={12}>
-          <h2>Formulario de Proyectos</h2>
+          <h2>Edicion de Proyectos</h2>
         </Grid>
         <Grid item xs={12}>
           <Container maxWidth="md">
@@ -109,8 +139,8 @@ const EditProyecto = () => {
                   //Si NOMBRE tiene algun valor se añade NOMBRE, si no es VACIO ("")
                   //nombre: dataProject.nombre ? dataProject.nombre : "" (esto es la manera larga de lo que abajo)
                   modelo: "Proyecto",
-                  estado: "To-Do",
-                  tipo: "Estandar",
+                  tipo: "None",
+                  estado: dataProject?.estado ?? "",
                   nombre: dataProject?.nombre ?? "",
                   responsable_id: dataProject?.responsable_id ?? "",
                   area_usuario: dataProject?.area_usuario ?? "",
@@ -123,10 +153,13 @@ const EditProyecto = () => {
                   responsabilidad: dataProject?.responsabilidad ?? "",
                   descripcion: dataProject?.descripcion ?? "",
                   costo: dataProject?.costo ?? 0,
-                  fecha_identificacion: dataProject.fecha_identificacion ?? "",
-                  fecha_inicio: dataProject.fecha_inicio ?? "",
-                  fecha_cierre: dataProject.fecha_cierre ?? "",
-                  equipo_trabajo: dataProject.equipo_trabajo ?? "",
+                  fecha_identificacion: dateFormat(
+                    dataProject?.fecha_identificacion ?? ""
+                  ),
+                  fecha_inicio: dateFormat(dataProject?.fecha_inicio ?? ""),
+                  fecha_cierre: dateFormat(dataProject?.fecha_cierre ?? ""),
+                  //archivo: "",
+                  equipo_trabajadores: team(dataProject.equipo_trabajadores),
                 }}
                 //Esquema de validacion, propiedad de formik que lo une con yup
                 validationSchema={FORM_VALIDATION}
@@ -191,8 +224,13 @@ const EditProyecto = () => {
                       />
                     </Grid>
                     <Grid item xs={12}>
+                      <h4>
+                        Equipo de Trabajo Actual :{" "}
+                        {teamName(dataProject.equipo_trabajadores)}
+                      </h4>
                       <SelectMultipleUI
-                        name="equipo_trabajo"
+                        helperText="NOTA: Si no desea hacer ningun cambio al equipo de trabajadores actual, NO TOCAR ESTE CAMPO."
+                        name="equipo_trabajadores"
                         label="Equipo de Trabajadores"
                         options={dataTrabajadores}
                       />

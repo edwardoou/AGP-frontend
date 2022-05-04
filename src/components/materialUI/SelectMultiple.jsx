@@ -8,7 +8,10 @@ const SelectMultipleUI = ({ name, options, ...otherprops }) => {
 
   const handleChange = (evt, valor) => {
     //Se le da al NAME, el VALUE donde esta el ID y se vuelve un string con join()
+    //let workers = [{ id: 1, nombre: "Alex" }];
+    //console.log(valor);
     setFieldValue(name, valor.map((elemento) => elemento.id).join());
+    console.log(valor);
   };
 
   const configSelect = {
@@ -26,15 +29,10 @@ const SelectMultipleUI = ({ name, options, ...otherprops }) => {
     <Autocomplete
       multiple
       options={options}
+      //de las opciones
       getOptionLabel={(option) => option.nombre}
       onChange={handleChange}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          {...configSelect}
-          //placeholder="Agregar minimo dos miembros."
-        />
-      )}
+      renderInput={(params) => <TextField {...params} {...configSelect} />}
     />
   );
 };
