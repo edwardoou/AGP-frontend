@@ -16,7 +16,7 @@ class TableTrabajadores extends Component {
     //Projects
     axios.get(process.env.REACT_APP_URL + "/trabajadores").then((res) => {
       /* console.log(res.data); */
-      this.setState({ trabajadores: res.data });
+      this.setState({ trabajadores: res.data.data });
     });
   }
 

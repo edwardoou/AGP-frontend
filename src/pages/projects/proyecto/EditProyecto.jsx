@@ -90,11 +90,10 @@ const EditProyecto = () => {
     //Id del project
     axios.get(url + "/projects/" + id).then((res) => {
       setDataProject(res.data.data);
-      console.log(res.data.data);
     });
     //Trabajadores
     axios.get(url + "/trabajadores").then((res) => {
-      setDataTrabajadores(res.data);
+      setDataTrabajadores(res.data.data);
     });
   }, [url, id, setDataProject, setDataTrabajadores]); //se vuelve a ejecutar si alguno de estos valores cambia
 
