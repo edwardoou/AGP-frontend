@@ -21,13 +21,9 @@ class TableTrabajadores extends Component {
   }
 
   //Editar
-  editlink(id, modelo) {
-    if (modelo === "Proyecto") {
-      return (window.location.href = "/proyectos/" + id);
-    } else if (modelo === "Innovacion") {
-      window.location.href = "http://facebook.com";
-    } else if (modelo === "Proceso") {
-      window.location.href = "http://twitter.com";
+  editlink(id) {
+    if (id) {
+      return (window.location.href = "/trabajador/" + id);
     } else {
       swal("Error", "Hay un error con la fila", "error");
     }
@@ -95,14 +91,9 @@ class TableTrabajadores extends Component {
                   />
                 ), // renderCell will render the component
               },
-              { field: "telefono", headerName: "TELEFONO", width: 120 },
-              { field: "direccion", headerName: "DIRECCION", width: 150 },
-              { field: "observacion", headerName: "OBSERVACION  ", width: 200 },
-              {
-                field: "sexo",
-                headerName: "SEXO",
-                width: 100,
-              },
+              //{ field: "telefono", headerName: "TELEFONO", width: 120 },
+              //{ field: "direccion", headerName: "DIRECCION", width: 150 },
+              //{ field: "observacion", headerName: "OBSERVACION  ", width: 200 },
               {
                 field: "categoria",
                 headerName: "CATEGORIA",
@@ -111,7 +102,7 @@ class TableTrabajadores extends Component {
               {
                 field: "sede",
                 headerName: "SEDE",
-                width: 80,
+                width: 100,
               },
               {
                 field: "area",
@@ -122,71 +113,31 @@ class TableTrabajadores extends Component {
               {
                 field: "empresa",
                 headerName: "EMPRESA",
-                width: 150,
-              },
-              {
-                field: "fecha_nacimiento",
-                headerName: "FECHA NACIMI.",
-                width: 130,
-                valueGetter(params) {
-                  var date = new Date(params.row.fecha_nacimiento);
-                  return (
-                    date.getDate() +
-                    "/" +
-                    (date.getMonth() + 1) +
-                    "/" +
-                    date.getFullYear()
-                  );
-                },
+                width: 120,
               },
               {
                 field: "fecha_ingreso",
                 headerName: "FECHA INGRESO",
                 width: 130,
                 valueGetter(params) {
-                  var date = new Date(params.row.fecha_ingreso);
-                  return (
-                    date.getDate() +
-                    "/" +
-                    (date.getMonth() + 1) +
-                    "/" +
-                    date.getFullYear()
-                  );
-                },
-              },
-              {
-                field: "fecha_cese",
-                headerName: "FECHA CESE",
-                width: 130,
-                type: "date",
-                valueGetter(params) {
-                  var date = new Date(params.row.fecha_cese);
-                  return (
-                    date.getDate() +
-                    "/" +
-                    (date.getMonth() + 1) +
-                    "/" +
-                    date.getFullYear()
-                  );
+                  return params.row.fecha_ingreso.split("T")[0];
                 },
               },
               {
                 field: "actions",
                 headerName: "OPCIONES",
                 type: "actions",
-                width: 150,
+                width: 100,
                 getActions: (params) => [
                   <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Editar"
-                    onClick={() =>
-                      this.editlink(params.row.idprojects, params.row.modelo)
-                    }
+                    onClick={() => this.editlink(params.row.id)}
                   />,
                   <GridActionsCellItem
                     icon={<DeleteIcon />}
                     label="Eliminar"
-                    onClick={() => this.eliminar(params.row.idprojects)}
+                    onClick={() => this.eliminar(params.row.id)}
                   />,
                 ],
               },

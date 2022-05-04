@@ -16,9 +16,11 @@ import FormInnovacion from "../pages/projects/innovacion/FormInnovacion";
 //*Trabajador
 import Trabajadores from "../pages/trabajadores/Trabajadores";
 import FormTrabajador from "../pages/trabajadores/FormTrabajador";
+import EditTrabajador from "../pages/trabajadores/EditTrabajador";
 
 import KanbanGeneral from "../pages/KanBan";
 import Test from "../pages/KanBanTest";
+
 
 const Routes = () => {
   return (
@@ -36,6 +38,7 @@ const Routes = () => {
       <Route path="/formularios/trabajador" component={FormTrabajador} />
       {/* Edit Formularios */}
       <Route path="/proyectos/:id" component={EditProyecto} />
+      <Route path="/trabajador/:id" component={EditTrabajador} />
     </Switch>
   );
 };

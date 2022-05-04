@@ -72,8 +72,13 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 class FormProyecto extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   handleChange = (e) => {
-    /* console.log(e.target.files[0]); */
+    console.log(e.target.files[0]);
     //El archivo
     e.preventDefault();
     this.setState({
