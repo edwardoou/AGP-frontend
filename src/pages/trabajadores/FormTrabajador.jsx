@@ -51,7 +51,6 @@ const INITIAL_FORM_STATE = {
   puesto: "",
   fecha_nacimiento: "",
   fecha_ingreso: "",
-  fecha_cese: "",
 };
 
 //Validacion con Yup
@@ -108,9 +107,9 @@ class FormProyecto extends Component {
                       formData.append(value, values[value]);
                     }
                     formData.append("foto", this.state.foto);
-                    /* for (let property of formData.entries()) {
+                    for (let property of formData.entries()) {
                       console.log(property[0], property[1]);
-                    } */
+                    }
 
                     //POST a la url, uso el metodo largo por mejor orden
                     axios({

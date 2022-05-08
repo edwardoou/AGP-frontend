@@ -1,10 +1,17 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { withStyles } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 //Alertas
 import swal from "sweetalert";
 import { GridActionsCellItem, DataGrid } from "@mui/x-data-grid";
+
+const useStyles = (theme) => ({
+  imgStyle: {
+    borderRadius: "40%",
+  },
+});
 
 class TableTrabajadores extends Component {
   constructor(props) {
@@ -47,7 +54,7 @@ class TableTrabajadores extends Component {
           .delete(process.env.REACT_APP_URL + "/trabajadores/" + id)
           .then((res) => {
             var temp = this.state.trabajadores.filter(
-              (trabajador) => trabajador.idprojects !== id
+              (trabajador) => trabajador.id !== id
             );
             this.setState({
               trabajadores: temp,
@@ -63,6 +70,7 @@ class TableTrabajadores extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <>
         <h2 className="page-header">Tabla General</h2>
@@ -79,17 +87,19 @@ class TableTrabajadores extends Component {
               {
                 field: "foto",
                 headerName: "FOTO",
-                width: 80,
+                width: 100,
                 renderCell: (params) => (
                   <img
                     src={params.value}
                     display="flex"
                     height="50"
-                    width="50"
-                    aspectRatio="1"
-                    alt={params.value}
+                    width="auto"
+                    //aspectRatio="16/9"
+                    //border="1px"
+                    alt="None"
+                    className={classes.imgStyle}
                   />
-                ), // renderCell will render the component
+                ),
               },
               //{ field: "telefono", headerName: "TELEFONO", width: 120 },
               //{ field: "direccion", headerName: "DIRECCION", width: 150 },
@@ -151,4 +161,4 @@ class TableTrabajadores extends Component {
   }
 }
 
-export default TableTrabajadores;
+export default withStyles(useStyles)(TableTrabajadores);

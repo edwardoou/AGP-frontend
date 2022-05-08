@@ -4,9 +4,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
-//Alertas
 import swal from "sweetalert";
 import { GridActionsCellItem, DataGrid } from "@mui/x-data-grid";
+import fileDownload from "js-file-download";
 
 class TableProjects extends Component {
   constructor(props) {
@@ -32,10 +32,22 @@ class TableProjects extends Component {
 
   //Descarga
   descargar(id) {
-    if (id > 0) {
-      swal("Error", "No hay un archivo que descargar!", "warning");
-    } else {
-      swal("Error", "No hay un archivo que descargar!", "warning");
+    let data = this.state.projects;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].id === id) {
+        const archivoURL = data[i].archivo;
+        //en replace([\\/ le quite un / por recomendacion de eslint])
+        const filename = archivoURL.replace(/^.*[\\/]/, "");
+        let fileExtension = archivoURL.split(".");
+        fileExtension = fileExtension[fileExtension.length - 1];
+        axios({
+          url: process.env.REACT_APP_URL + "/descarga/" + filename,
+          method: "get",
+          responseType: "blob",
+        }).then((res) => {
+          fileDownload(res.data, `${data[i].nombre}.${fileExtension}`);
+        });
+      }
     }
   }
 

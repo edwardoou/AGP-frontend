@@ -63,7 +63,7 @@ const INITIAL_FORM_STATE = {
   fecha_identificacion: "",
   fecha_inicio: "",
   fecha_cierre: "",
-  equipo_trabajo: "",
+  equipo_trabajadores: "",
 };
 
 //Validacion con Yup
@@ -88,7 +88,7 @@ const FORM_VALIDATION = Yup.object().shape({
   fecha_identificacion: Yup.date().required("Fecha Requerida"),
   fecha_inicio: Yup.date().required("Fecha Requerida"),
   fecha_cierre: Yup.date().required("Fecha Requerida"),
-  equipo_trabajo: Yup.string().required("Campo requerido"),
+  equipo_trabajadores: Yup.string().required("Campo requerido"),
 });
 
 class FormProyecto extends Component {
@@ -196,7 +196,7 @@ class FormProyecto extends Component {
                       </Grid>
                       <Grid item xs={12}>
                         <SelectMultipleUI
-                          name="equipo_trabajo"
+                          name="equipo_trabajadores"
                           label="Equipo de Trabajadores"
                           options={this.state.trabajadores}
                         />

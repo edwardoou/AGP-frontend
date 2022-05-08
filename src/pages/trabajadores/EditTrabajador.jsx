@@ -79,6 +79,14 @@ const EditTrabajador = () => {
     return date.split("T")[0];
   }
 
+  function dateCese(date) {
+    if (date === "null" || !date) {
+      return "";
+    } else {
+      return dateFormat(date);
+    }
+  }
+
   return (
     <div className="card">
       <Grid container>
@@ -110,8 +118,8 @@ const EditTrabajador = () => {
                   fecha_ingreso: dateFormat(
                     dataTrabajadores?.fecha_ingreso ?? ""
                   ),
-                  //fecha_cese: dateFormat(dataTrabajadores?.fecha_cese ?? ""),
-                  //archivo: "",
+                  fecha_cese: dateCese(dataTrabajadores?.fecha_cese ?? ""),
+                  //foto: "",
                 }}
                 //Esquema de validacion, propiedad de formik que lo une con yup
                 validationSchema={FORM_VALIDATION}
@@ -126,7 +134,7 @@ const EditTrabajador = () => {
                   //POST a la url, uso el metodo largo por mejor orden
                   axios({
                     method: "put",
-                    url: url + "/projects/" + id,
+                    url: url + "/trabajadores/" + id,
                     data: formData,
                     headers: new Headers({ Accept: "application/json" }),
                     validateStatus: async (status) => {
@@ -136,7 +144,7 @@ const EditTrabajador = () => {
                           "Formulario enviado con exito!",
                           "success"
                         );
-                        return (window.location.href = "/projects");
+                        return (window.location.href = "/trabajadores");
                       } else if (status === 500) {
                         return swal(
                           "Error code " + status,
