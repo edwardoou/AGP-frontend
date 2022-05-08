@@ -8,8 +8,8 @@
     "display_name": "Formularios",
     "route": "#",
     "icon": "bx bx-spreadsheet",
-    "iconOpened" :"bx bxs-chevron-down",
-    "iconClosed" :"bx bxs-chevron-up",
+    "iconOpened": "bx bxs-chevron-down",
+    "iconClosed": "bx bxs-chevron-up",
     "subNav": [
       {
         "display_name": "Form. Trabajadores",
@@ -24,7 +24,7 @@
       {
         "display_name": "Form. Innovaciones",
         "route": "/formularios/innovacion",
-        "icon": "bx bx-comment-add"
+        "icon": "bx bx-network-chart"
       },
       {
         "display_name": "Form. Procesos",
@@ -39,8 +39,8 @@
     "icon": "bx bxs-user"
   },
   {
-    "display_name": "Proyectos",
+    "display_name": "Projects",
     "route": "/projects",
-    "icon": "bx bx-briefcase-alt-2"
+    "icon": "bx bx-border-all"
   }
 ]

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { withStyles } from "@material-ui/core";
-import DeleteIcon from "@mui/icons-material/Delete";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import EditIcon from "@mui/icons-material/Edit";
 //Alertas
 import swal from "sweetalert";
@@ -20,9 +20,7 @@ class TableTrabajadores extends Component {
   }
 
   componentDidMount() {
-    //Projects
     axios.get(process.env.REACT_APP_URL + "/trabajadores").then((res) => {
-      /* console.log(res.data); */
       this.setState({ trabajadores: res.data.data });
     });
   }
@@ -43,10 +41,10 @@ class TableTrabajadores extends Component {
   //DELETE
   eliminar(id) {
     swal({
-      title: "¿Esta seguro de eliminar la fila seleccionada?",
-      text: "Esta acción no se puede deshacer.",
+      title: "¿Esta seguro de cesar al trabajador?",
+      text: "Se añadira la fecha actual como FECHA DE CESE al trabajador seleccionado, NO SE BORRARAN SUS DATOS, pero si toda relacion que tenga con projects, acciones o actividades. ",
       icon: "warning",
-      buttons: ["Cancelar", "Eliminar!"],
+      buttons: ["Cancelar", "Cesar!"],
       dangerMode: true,
     }).then((value) => {
       if (value) {
@@ -59,12 +57,12 @@ class TableTrabajadores extends Component {
             this.setState({
               trabajadores: temp,
             });
-            swal("Se elimino la fila exitosamente!", {
+            swal("Se ceso al trabajador exitosamente!", {
               icon: "success",
             });
           });
       } else {
-        swal("Se cancelo la eliminación!");
+        swal("Se cancelo el cese de trabajador!");
       }
     });
   }
@@ -82,7 +80,7 @@ class TableTrabajadores extends Component {
               {
                 field: "nombre",
                 headerName: "NOMBRE",
-                width: 180,
+                width: 200,
               },
               {
                 field: "foto",
@@ -101,9 +99,7 @@ class TableTrabajadores extends Component {
                   />
                 ),
               },
-              //{ field: "telefono", headerName: "TELEFONO", width: 120 },
-              //{ field: "direccion", headerName: "DIRECCION", width: 150 },
-              //{ field: "observacion", headerName: "OBSERVACION  ", width: 200 },
+              { field: "telefono", headerName: "TELEFONO", width: 120 },
               {
                 field: "categoria",
                 headerName: "CATEGORIA",
@@ -145,7 +141,7 @@ class TableTrabajadores extends Component {
                     onClick={() => this.editlink(params.row.id)}
                   />,
                   <GridActionsCellItem
-                    icon={<DeleteIcon />}
+                    icon={<ExitToAppIcon />}
                     label="Eliminar"
                     onClick={() => this.eliminar(params.row.id)}
                   />,

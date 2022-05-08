@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
+import axios from "axios";
 import { Link } from "react-router-dom";
-//Data Cards del Dashboard
-import statusCards from "../assets/JsonData/status-card-data.json";
 //Diseño Cards
 import StatusCard from "../components/status-card/StatusCard";
 //Badge
@@ -53,6 +52,18 @@ const chartOptions = {
 };
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { projects: [] };
+  }
+
+  componentDidMount() {
+    //Projects
+    axios.get(process.env.REACT_APP_URL + "/projects/count").then((res) => {
+      this.setState({ projects: res.data.data });
+    });
+  }
+
   render() {
     return (
       <div>
@@ -60,18 +71,30 @@ class Dashboard extends Component {
         <div className="row">
           <div className="col-6">
             <div className="row">
-              {
-                //Iteracion de las Cards
-                statusCards.map((item, index) => (
-                  <div className="col-6" key={index}>
-                    <StatusCard
-                      cuenta={item.count}
-                      icono={item.icon}
-                      titulo={item.title}
-                    />
-                  </div>
-                ))
-              }
+              <div className="col-6">
+                <StatusCard
+                  cuenta={this.state.projects.proyectos}
+                  icono={"bx bx-briefcase"}
+                  titulo={"Proyectos"}
+                />
+                <StatusCard
+                  cuenta={this.state.projects.procesos}
+                  icono={"bx bx-stats"}
+                  titulo={"Procesos"}
+                />
+              </div>
+              <div className="col-6">
+                <StatusCard
+                  cuenta={this.state.projects.innovaciones}
+                  icono={"bx bx-network-chart"}
+                  titulo={"Innovaciones"}
+                />
+                <StatusCard
+                  cuenta={this.state.projects.total}
+                  icono={"bx bx-happy-beaming"}
+                  titulo={"Total"}
+                />
+              </div>
             </div>
           </div>
           <div className="col-6">
@@ -81,7 +104,7 @@ class Dashboard extends Component {
                 options={chartOptions.options}
                 series={chartOptions.series}
                 type="line"
-                height="100%"
+                height="130%"
               />
             </div>
           </div>
