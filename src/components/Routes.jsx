@@ -20,7 +20,8 @@ import EditTrabajador from "../pages/trabajadores/EditTrabajador";
 
 import KanbanGeneral from "../pages/KanBan";
 import Test from "../pages/KanBanTest";
-
+import Actividades from "../pages/actividades/Actividades";
+import Acciones from "../pages/acciones/Acciones";
 
 const Routes = () => {
   return (
@@ -30,6 +31,8 @@ const Routes = () => {
       <Route path="/kanban" component={KanbanGeneral} />
       {/* Tablas */}
       <Route path="/projects" component={Projects} />
+      <Route path="/actividades" component={Actividades} />
+      <Route path="/acciones" component={Acciones} />
       <Route path="/trabajadores" component={Trabajadores} />
       {/* Formularios */}
       <Route path="/formularios/proyecto" component={FormProyecto} />

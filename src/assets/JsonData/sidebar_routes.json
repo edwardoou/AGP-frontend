@@ -42,5 +42,15 @@
     "display_name": "Projects",
     "route": "/projects",
     "icon": "bx bx-border-all"
+  },
+  {
+    "display_name": "Acciones",
+    "route": "/acciones",
+    "icon": "bx bx-walk"
+  },
+  {
+    "display_name": "Actividades",
+    "route": "/actividades",
+    "icon": "bx bxs-hand-up"
   }
 ]
