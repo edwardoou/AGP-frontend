@@ -22,6 +22,8 @@ import KanbanGeneral from "../pages/KanBan";
 import Test from "../pages/KanBanTest";
 import Actividades from "../pages/actividades/Actividades";
 import Acciones from "../pages/acciones/Acciones";
+import FormAccion from "../pages/acciones/FormAccion";
+import FormActividad from "../pages/actividades/FormActividad";
 
 const Routes = () => {
   return (
@@ -39,6 +41,8 @@ const Routes = () => {
       <Route path="/formularios/innovacion" component={FormInnovacion} />
       <Route path="/formularios/proceso" component={FormProceso} />
       <Route path="/formularios/trabajador" component={FormTrabajador} />
+      <Route path="/formularios/accion" component={FormAccion} />
+      <Route path="/formularios/actividad" component={FormActividad} />
       {/* Edit Formularios */}
       <Route path="/proyectos/:id" component={EditProyecto} />
       <Route path="/trabajador/:id" component={EditTrabajador} />

@@ -30,18 +30,28 @@
         "display_name": "Form. Procesos",
         "route": "/formularios/proceso",
         "icon": "bx bx-stats"
+      },
+      {
+        "display_name": "Form. Acciones",
+        "route": "/formularios/accion",
+        "icon": "bx bx-walk"
+      },
+      {
+        "display_name": "Form. Actividades",
+        "route": "/formularios/actividad",
+        "icon": "bx bxs-hand-up"
       }
     ]
-  },
-  {
-    "display_name": "Trabajadores",
-    "route": "/trabajadores",
-    "icon": "bx bxs-user"
   },
   {
     "display_name": "Projects",
     "route": "/projects",
     "icon": "bx bx-border-all"
+  },
+  {
+    "display_name": "Trabajadores",
+    "route": "/trabajadores",
+    "icon": "bx bxs-user"
   },
   {
     "display_name": "Acciones",
