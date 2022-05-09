@@ -10,20 +10,26 @@ import FormProyecto from "../pages/projects/proyecto/FormProyecto";
 import EditProyecto from "../pages/projects/proyecto/EditProyecto";
 //Proceso
 import FormProceso from "../pages/projects/proceso/FormProceso";
+import EditProceso from "../pages/projects/proceso/EditProceso";
 //Innovacion
 import FormInnovacion from "../pages/projects/innovacion/FormInnovacion";
+import EditInnovacion from "../pages/projects/innovacion/EditInnovacion";
 
 //*Trabajador
 import Trabajadores from "../pages/trabajadores/Trabajadores";
 import FormTrabajador from "../pages/trabajadores/FormTrabajador";
 import EditTrabajador from "../pages/trabajadores/EditTrabajador";
 
-import KanbanGeneral from "../pages/KanBan";
-import Test from "../pages/KanBanTest";
+//*Actividad
 import Actividades from "../pages/actividades/Actividades";
+import FormActividad from "../pages/actividades/FormActividad";
+//*Accion
 import Acciones from "../pages/acciones/Acciones";
 import FormAccion from "../pages/acciones/FormAccion";
-import FormActividad from "../pages/actividades/FormActividad";
+
+//Tests
+import KanbanGeneral from "../pages/KanBan";
+import Test from "../pages/KanBanTest";
 
 const Routes = () => {
   return (
@@ -46,6 +52,8 @@ const Routes = () => {
       {/* Edit Formularios */}
       <Route path="/proyectos/:id" component={EditProyecto} />
       <Route path="/trabajador/:id" component={EditTrabajador} />
+      <Route path="/procesos/:id" component={EditProceso} />
+      <Route path="/innovaciones/:id" component={EditInnovacion} />
     </Switch>
   );
 };

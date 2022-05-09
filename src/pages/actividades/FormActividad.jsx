@@ -87,7 +87,7 @@ class FormActividad extends Component {
       <div className="card">
         <Grid container>
           <Grid item xs={12}>
-            <h2>Formulario de Acciones</h2>
+            <h2>Formulario de Actividades</h2>
           </Grid>
           <Grid item xs={12}>
             <Container maxWidth="md">
